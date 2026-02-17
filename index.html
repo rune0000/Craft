@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>FiveM クラフト計算</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:#0b141a;
+}
+
+/* ===== コンテナ ===== */
+.container {
+    width: 430px;
+    padding: 24px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0,255,200,0.15);
+}
+
+/* ===== タブ ===== */
+.tabs {
+    display: flex;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(255,255,255,0.05);
+}
+
+.tab.active {
+    background: linear-gradient(90deg,#00c853,#00ffd0);
+    color: black;
+    font-weight: bold;
+}
+
+/* ===== タブ別背景ライン ===== */
+.weaponTheme { border-left: 4px solid #00ffd0; }
+.handicraftTheme { border-left: 4px solid #ffb74d; }
+.medicineTheme { border-left: 4px solid #ff5252; }
+
+h2 {
+    text-align: center;
+    margin: 10px 0 16px 0;
+}
+
+select,input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,255,200,0.2);
+    background: rgba(0,0,0,0.4);
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(90deg,#00c853,#00ffd0);
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ===== 結果カード ===== */
+.resultCard {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(0,255,200,0.15);
+}
+
+/* アイテム情報 */
+.itemHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.itemHeader img {
+    width: 34px;
+}
+
+/* 素材表 */
+.materialTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.materialTable td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(0,255,200,0.08);
+}
+
+.materialName {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.materialName img {
+    width: 20px;
+}
+
+/* 労働力 */
+.laborBox {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0,255,200,0.2);
+    font-weight: bold;
+    color: #7ef9d6;
+}
+
+.hidden { display:none; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="tabs">
+<div class="tab active" onclick="switchTab('weapon')">武器</div>
+<div class="tab" onclick="switchTab('handicraft')">手芸</div>
+<div class="tab" onclick="switchTab('medicine')">薬</div>
+</div>
+
+<!-- 武器 -->
+<div id="weaponUI" class="weaponTheme">
+<h2>武器クラフト</h2>
+<select id="weaponSelect"></select>
+<input type="number" id="weaponAmount" value="1" min="1">
+<button onclick="calcWeapon()">計算</button>
+<div id="weaponResult"></div>
+</div>
+
+<!-- 手芸 -->
+<div id="handicraftUI" class="handicraftTheme hidden">
+<h2>手芸クラフト</h2>
+<select id="handicraftSelect"></select>
+<input type="number" id="handicraftAmount" value="1" min="1">
+<button onclick="calcHandicraft()">計算</button>
+<div id="handicraftResult"></div>
+</div>
+
+<!-- 薬 -->
+<div id="medicineUI" class="medicineTheme hidden">
+<h2>薬クラフト</h2>
+<select id="medicineSelect"></select>
+<input type="number" id="medicineAmount" value="1" min="1">
+<button onclick="calcMedicine()">計算</button>
+<div id="medicineResult"></div>
+</div>
+
+</div>
+
+<script>
+function switchTab(type){
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+event.target.classList.add("active");
+
+weaponUI.classList.toggle("hidden", type!=="weapon");
+handicraftUI.classList.toggle("hidden", type!=="handicraft");
+medicineUI.classList.toggle("hidden", type!=="medicine");
+}
+
+/* =========================
+   武器レシピ
+========================= */
+const weaponRecipes = [
+
+    {
+        name: "Pistol",
+        icon: "https://i.ibb.co/JRdPT6Xf/weapon-pistol.png",
+        labor: 50,
+
+        materials: {
+            スクラップ: {
+                count: 20,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+            },
+            鉄: {
+                count: 10,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            銅: {
+                count: 10,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                }
+        }
+    },
+
+    {
+        name: "Heavy Pistol",
+        icon: "https://i.ibb.co/JFsGXtkj/weapon-heavypistol.png",
+        labor: 100,
+
+        materials: {
+            アルミニウム: {
+                count: 10,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            ゴム: {
+                count: 10,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            剛鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "Mini SMG",
+        icon: "https://i.ibb.co/PZMkFCq5/weapon-minismg.png",
+        labor: 100,
+
+        materials: {
+            スクラップ: {
+                count: 10,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+            },
+            鉄: {
+                count: 10,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            銅: {
+                count: 15,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+            剛鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+    
+    {
+        name: "Assault SMG",
+        icon: "https://i.ibb.co/RT4LXbsw/weapon-assaultsmg.png",
+        labor: 525,
+
+        materials: {
+            アルミニウム: {
+                count: 5,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            スクラップ: {
+                count: 20,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+                },
+            鉄: {
+                count: 20,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            銅: {
+                count: 10,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+            剛鉄: {
+                count: 10,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "Carbine Rifle",
+        icon: "https://i.ibb.co/Tqc9Zq14/weapon-carbinerifle.png",
+        labor: 575,
+
+        materials: {
+            アルミニウム: {
+                count: 10,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            ゴム: {
+                count: 20,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+                },
+            鉄: {
+                count: 20,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            剛鉄: {
+                count: 20,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "Carbine Rifle MK2",
+        icon: "https://i.ibb.co/Mx967ZnD/weapon-carbinerifle-mk2.png",
+        labor: 650,
+
+        materials: {
+            アルミニウム: {
+                count: 30,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            ゴム: {
+                count: 30,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+                },
+            鉄: {
+                count: 30,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            剛鉄: {
+                count: 30,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "SMG MK2",
+        icon: "https://i.ibb.co/WpFD7Fv0/weapon-smg-mk2.png",
+        labor: 725,
+
+        materials: {
+            ゴム: {
+                count: 5,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+                },
+            スクラップ: {
+                count: 20,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+                },
+            鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            銅: {
+                count: 10,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+            剛鉄: {
+                count: 5,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "Heavy Rifle",
+        icon: "https://i.ibb.co/35SsqzGh/weapon-heavyrifle.png",
+        labor: 1000,
+
+        materials: {
+            アルミニウム: {
+                count: 25,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            ゴム: {
+                count: 25,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+                },
+            鉄: {
+                count: 25,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            銅: {
+                count: 25,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+            剛鉄: {
+                count: 25,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "SMG",
+        icon: "https://i.ibb.co/ZqbFXTP/weapon-smg.png",
+        labor: 875,
+
+        materials: {
+            アルミニウム: {
+                count: 7,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            ゴム: {
+                count: 7,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+                },
+            スクラップ: {
+                count: 15,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+                },
+            鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            銅: {
+                count: 7,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+        }
+    },
+
+    {
+        name: "Bullpup Rifle",
+        icon: "https://i.ibb.co/RmZQb5p/weapon-bullpuprifle.png",
+        labor: 900,
+
+        materials: {
+            アルミニウム: {
+                count: 30,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            ゴム: {
+                count: 15,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+                },
+            鉄: {
+                count: 20,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            剛鉄: {
+                count: 20,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "Bullpup Rifle MK2",
+        icon: "https://i.ibb.co/r2hspLbW/weapon-bullpuprifle-mk2.png",
+        labor: 950,
+
+        materials: {
+            アルミニウム: {
+                count: 15,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            ゴム: {
+                count: 20,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+                },
+            鉄: {
+                count: 30,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            剛鉄: {
+                count: 20,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+    {
+        name: "Micro SMG",
+        icon: "https://i.ibb.co/r2hspLbW/weapon-bullpuprifle-mk2.png",
+        labor: 1000,
+
+        materials: {
+            アルミニウム: {
+                count: 10,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                },
+            スクラップ: {
+                count: 15,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+                },
+            鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            剛鉄: {
+                count: 5,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+    },
+
+];
+
+
+/* =========================
+   手芸レシピ
+========================= */
+const handicraftRecipes = [
+
+    {
+        name: "布バッグ",
+        icon: "https://i.imgur.com/1XK7GQH.png",
+        labor: 3,
+
+        materials: {
+            布: {
+                count: 5,
+                icon: "https://i.imgur.com/G9bDaPH.png"
+            },
+            糸: {
+                count: 2,
+                icon: "https://i.imgur.com/fV9Jp7O.png"
+            }
+        }
+    }
+
+];
+
+
+/* =========================
+   薬レシピ
+========================= */
+const medicineRecipes = [
+
+    {
+        name: "包帯",
+        icon: "https://i.imgur.com/t0HhK0D.png",
+        labor: 2,
+
+        materials: {
+            布: {
+                count: 3,
+                icon: "https://i.imgur.com/G9bDaPH.png"
+            },
+            消毒液: {
+                count: 1,
+                icon: "https://i.imgur.com/4ZQZ4Zs.png"
+            }
+        }
+    }
+
+];
+
+
+/* セレクト */
+function fillSelect(id,list){
+const sel=document.getElementById(id);
+list.forEach((item,i)=>{
+const op=document.createElement("option");
+op.value=i;
+op.textContent=item.name;
+sel.appendChild(op);
+});
+}
+
+fillSelect("weaponSelect",weaponRecipes);
+fillSelect("handicraftSelect",handicraftRecipes);
+fillSelect("medicineSelect",medicineRecipes);
+
+/* 描画 */
+function render(target,item,amount){
+let html=`
+<div class="resultCard">
+<div class="itemHeader">
+<img src="${item.icon}">
+<div>${item.name} × ${amount}</div>
+</div>
+
+<table class="materialTable">
+`;
+
+for(const m in item.materials){
+const mat=item.materials[m];
+html+=`
+<tr>
+<td class="materialName">
+<img src="${mat.icon}">
+${m}
+</td>
+<td>${mat.count*amount}</td>
+</tr>`;
+}
+
+html+=`
+</table>
+<div class="laborBox">必要労働力 : ${item.labor*amount}</div>
+</div>
+`;
+
+document.getElementById(target).innerHTML=html;
+}
+
+/* 計算 */
+function calcWeapon(){ render("weaponResult",weaponRecipes[weaponSelect.value],weaponAmount.value); }
+function calcHandicraft(){ render("handicraftResult",handicraftRecipes[handicraftSelect.value],handicraftAmount.value); }
+function calcMedicine(){ render("medicineResult",medicineRecipes[medicineSelect.value],medicineAmount.value); }
+
+calcWeapon();
+</script>
+
+</body>
+</html>
