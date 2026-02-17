@@ -18,7 +18,6 @@ body {
     background:#0b141a;
 }
 
-/* ===== コンテナ ===== */
 .container {
     width: 430px;
     padding: 24px;
@@ -28,7 +27,6 @@ body {
     border: 1px solid rgba(0,255,200,0.15);
 }
 
-/* ===== タブ ===== */
 .tabs {
     display: flex;
     margin-bottom: 16px;
@@ -50,15 +48,12 @@ body {
     font-weight: bold;
 }
 
-/* ===== タブ別背景ライン ===== */
 .weaponTheme { border-left: 4px solid #00ffd0; }
 .handicraftTheme { border-left: 4px solid #ffb74d; }
 .medicineTheme { border-left: 4px solid #ff5252; }
+.attachmentTheme { border-left: 4px solid #64b5f6; }
 
-h2 {
-    text-align: center;
-    margin: 10px 0 16px 0;
-}
+h2 { text-align: center; margin: 10px 0 16px 0; }
 
 select,input {
     width: 100%;
@@ -82,7 +77,6 @@ button {
     cursor: pointer;
 }
 
-/* ===== 結果カード ===== */
 .resultCard {
     margin-top: 16px;
     padding: 16px;
@@ -91,7 +85,6 @@ button {
     border: 1px solid rgba(0,255,200,0.15);
 }
 
-/* アイテム情報 */
 .itemHeader {
     display: flex;
     align-items: center;
@@ -100,11 +93,8 @@ button {
     margin-bottom: 12px;
 }
 
-.itemHeader img {
-    width: 34px;
-}
+.itemHeader img { width: 34px; }
 
-/* 素材表 */
 .materialTable {
     width: 100%;
     border-collapse: collapse;
@@ -122,11 +112,8 @@ button {
     gap: 8px;
 }
 
-.materialName img {
-    width: 20px;
-}
+.materialName img { width: 20px; }
 
-/* 労働力 */
 .laborBox {
     margin-top: 10px;
     padding-top: 10px;
@@ -145,11 +132,12 @@ button {
 
 <div class="tabs">
 <div class="tab active" onclick="switchTab('weapon')">武器</div>
+<div class="tab" onclick="switchTab('attachment')">アタッチメント</div>
 <div class="tab" onclick="switchTab('handicraft')">手芸</div>
 <div class="tab" onclick="switchTab('medicine')">薬</div>
+
 </div>
 
-<!-- 武器 -->
 <div id="weaponUI" class="weaponTheme">
 <h2>武器クラフト</h2>
 <select id="weaponSelect"></select>
@@ -158,7 +146,6 @@ button {
 <div id="weaponResult"></div>
 </div>
 
-<!-- 手芸 -->
 <div id="handicraftUI" class="handicraftTheme hidden">
 <h2>手芸クラフト</h2>
 <select id="handicraftSelect"></select>
@@ -167,13 +154,20 @@ button {
 <div id="handicraftResult"></div>
 </div>
 
-<!-- 薬 -->
 <div id="medicineUI" class="medicineTheme hidden">
 <h2>薬クラフト</h2>
 <select id="medicineSelect"></select>
 <input type="number" id="medicineAmount" value="1" min="1">
 <button onclick="calcMedicine()">計算</button>
 <div id="medicineResult"></div>
+</div>
+
+<div id="attachmentUI" class="attachmentTheme hidden">
+<h2>アタッチメントクラフト</h2>
+<select id="attachmentSelect"></select>
+<input type="number" id="attachmentAmount" value="1" min="1">
+<button onclick="calcAttachment()">計算</button>
+<div id="attachmentResult"></div>
 </div>
 
 </div>
@@ -186,6 +180,7 @@ event.target.classList.add("active");
 weaponUI.classList.toggle("hidden", type!=="weapon");
 handicraftUI.classList.toggle("hidden", type!=="handicraft");
 medicineUI.classList.toggle("hidden", type!=="medicine");
+attachmentUI.classList.toggle("hidden", type!=="attachment");
 }
 
 /* =========================
@@ -507,56 +502,53 @@ const weaponRecipes = [
 
 ];
 
-
-/* =========================
-   手芸レシピ
-========================= */
+/* ===== 手芸 ===== */
 const handicraftRecipes = [
-
-    {
-        name: "布バッグ",
-        icon: "https://i.imgur.com/1XK7GQH.png",
-        labor: 3,
-
-        materials: {
-            布: {
-                count: 5,
-                icon: "https://i.imgur.com/G9bDaPH.png"
-            },
-            糸: {
-                count: 2,
-                icon: "https://i.imgur.com/fV9Jp7O.png"
-            }
-        }
-    }
-
+{
+name:"布バッグ",
+icon:"https://i.imgur.com/1XK7GQH.png",
+labor:3,
+materials:{
+布:{count:5,icon:"https://i.imgur.com/G9bDaPH.png"},
+糸:{count:2,icon:"https://i.imgur.com/fV9Jp7O.png"}
+}
+}
 ];
 
-
-/* =========================
-   薬レシピ
-========================= */
+/* ===== 薬 ===== */
 const medicineRecipes = [
-
-    {
-        name: "包帯",
-        icon: "https://i.imgur.com/t0HhK0D.png",
-        labor: 2,
-
-        materials: {
-            布: {
-                count: 3,
-                icon: "https://i.imgur.com/G9bDaPH.png"
-            },
-            消毒液: {
-                count: 1,
-                icon: "https://i.imgur.com/4ZQZ4Zs.png"
-            }
-        }
-    }
-
+{
+name:"包帯",
+icon:"https://i.imgur.com/t0HhK0D.png",
+labor:2,
+materials:{
+布:{count:3,icon:"https://i.imgur.com/G9bDaPH.png"},
+消毒液:{count:1,icon:"https://i.imgur.com/4ZQZ4Zs.png"}
+}
+}
 ];
 
+/* ===== アタッチメント ===== */
+const attachmentRecipes = [
+{
+name:"サプレッサー",
+icon:"https://i.imgur.com/8Qf6K9R.png",
+labor:20,
+materials:{
+鉄:{count:10,icon:"https://i.ibb.co/kT8MzGL/iron.png"},
+ゴム:{count:5,icon:"https://i.ibb.co/sd9c5jqS/rubber.png"}
+}
+},
+{
+name:"拡張マガジン",
+icon:"https://i.imgur.com/8Qf6K9R.png",
+labor:15,
+materials:{
+鉄:{count:8,icon:"https://i.ibb.co/kT8MzGL/iron.png"},
+スプリング:{count:2,icon:"https://i.imgur.com/8Qf6K9R.png"}
+}
+}
+];
 
 /* セレクト */
 function fillSelect(id,list){
@@ -572,6 +564,7 @@ sel.appendChild(op);
 fillSelect("weaponSelect",weaponRecipes);
 fillSelect("handicraftSelect",handicraftRecipes);
 fillSelect("medicineSelect",medicineRecipes);
+fillSelect("attachmentSelect",attachmentRecipes);
 
 /* 描画 */
 function render(target,item,amount){
@@ -581,7 +574,6 @@ let html=`
 <img src="${item.icon}">
 <div>${item.name} × ${amount}</div>
 </div>
-
 <table class="materialTable">
 `;
 
@@ -610,6 +602,7 @@ document.getElementById(target).innerHTML=html;
 function calcWeapon(){ render("weaponResult",weaponRecipes[weaponSelect.value],weaponAmount.value); }
 function calcHandicraft(){ render("handicraftResult",handicraftRecipes[handicraftSelect.value],handicraftAmount.value); }
 function calcMedicine(){ render("medicineResult",medicineRecipes[medicineSelect.value],medicineAmount.value); }
+function calcAttachment(){ render("attachmentResult",attachmentRecipes[attachmentSelect.value],attachmentAmount.value); }
 
 calcWeapon();
 </script>
