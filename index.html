@@ -504,16 +504,512 @@ const weaponRecipes = [
 
 /* ===== 手芸 ===== */
 const handicraftRecipes = [
+
+    {
+        name: ".45 ACP弾",
+        icon: "https://i.ibb.co/fdpwJ8gg/ammo-45.webp",
+        labor: 15,
+
+        materials: {
+            スクラップ: {
+                count: 2,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+            },
+            鉄の粉: {
+                count: 7,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+            },
+        }
+},
+
 {
-name:"布バッグ",
-icon:"https://i.imgur.com/1XK7GQH.png",
-labor:3,
-materials:{
-布:{count:5,icon:"https://i.imgur.com/G9bDaPH.png"},
-糸:{count:2,icon:"https://i.imgur.com/fV9Jp7O.png"}
-}
-}
+        name: "9mm弾",
+        icon: "https://i.ibb.co/ynRSXC2W/ammo-9.webp",
+        labor: 10,
+
+        materials: {
+            スクラップ: {
+                count: 1,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+            },
+            鉄の粉: {
+                count: 5,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+            },
+        }
+},
+
+{
+        name: "5.56×45弾",
+        icon: "https://i.ibb.co/Jj0Cs8wK/ammo-rifle.png",
+        labor: 20,
+
+        materials: {
+            スクラップ: {
+                count: 3,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+            },
+            鉄の粉: {
+                count: 10,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+            },
+        }
+},
+
+{
+        name: "7.62×39弾",
+        icon: "https://i.ibb.co/RGmFxBLH/ammo-rifle2.webp",
+        labor: 20,
+
+        materials: {
+            スクラップ: {
+                count: 4,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+            },
+            鉄の粉: {
+                count: 12,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+            },
+        }
+},
+
+{
+        name: "(犯罪)Advanced Lockpick",
+        icon: "https://i.ibb.co/KxzbKfxB/advancedlockpick.png",
+        labor: 25,
+
+        materials: {
+            lockpick: {
+                count: 1,
+                icon: "https://i.ibb.co/CsJ3gRQb/lockpick.png"
+            },
+            アルミニウム: {
+                count: 5,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            ゴム: {
+                count: 5,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+                }
+        }
+},
+
+{
+        name: "(犯罪)Bag",
+        icon: "https://i.ibb.co/PvgLzCRX/duffelbag.png",
+        labor: 50,
+
+        materials: {
+            ゴム: {
+                count: 15,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            布: {
+                count: 15,
+                icon: "https://i.ibb.co/8nTCL1mR/cloth.png"
+            },
+            
+        }
+},
+
+{
+        name: "(犯罪)cutter",
+        icon: "https://i.ibb.co/wNJb6JZf/image2-transparent-100.png",
+        labor: 100,
+
+        materials: {
+            ジャンク電子部品: {
+                count: 15,
+                icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png"
+            },
+            鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            剛鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                }
+        }
+},
+
+{
+        name: "(犯罪)Disruptor",
+        icon: "https://i.ibb.co/92XbB0m/image3-transparent-100.png",
+        labor: 100,
+
+        materials: {
+            アルミニウム: {
+                count: 10,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            ジャンク電子部品: {
+                count: 30,
+                icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png"
+            },
+            プラスチック: {
+                count: 10,
+                icon: "https://i.ibb.co/hRdm4Z1C/plastic.png"
+            },
+            銅: {
+                count: 15,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+            }
+        }
+},
+
+{
+        name: "(犯罪)Hack Laptop",
+        icon: "https://i.ibb.co/gZfDTs9F/image5-transparent-100.png",
+        labor: 50,
+
+        materials: {
+            アルミニウム: {
+                count: 10,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            ジャンク電子部品: {
+                count: 15,
+                icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png"
+            },
+            鉄: {
+                count: 5,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            銅: {
+                count: 5,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                }
+        }
+},
+
+{
+        name: "(犯罪)Hack USB",
+        icon: "https://i.ibb.co/9mGcsFK4/2026-02-20-000053.png",
+        labor: 25,
+
+        materials: {
+            クリプトスティック: {
+                count: 15,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            USBデバイス: {
+                count: 2,
+                icon: "https://i.ibb.co/V0kkypBv/image6-transparent-100.png"
+            },
+            プラスチック: {
+                count: 5,
+                icon: "https://i.ibb.co/hRdm4Z1C/plastic.png"
+            },
+            銅: {
+                count: 10,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                }
+        }
+},
+
+{
+        name: "(犯罪)Handcuffs",
+        icon: "https://i.ibb.co/xq9cfGTJ/2026-02-20-001104.png",
+        labor: 100,
+
+        materials: {
+            アルミニウム: {
+                count: 50,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            鉄: {
+                count: 50,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            銅: {
+                count: 50,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+            剛鉄: {
+                count: 50,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+},
+
+{
+        name: "(犯罪)Heavy Armor",
+        icon: "https://i.ibb.co/s9gVnRg5/2026-02-20-001138.png",
+        labor: 100,
+
+        materials: {
+            ガラス: {
+                count: 15,
+                icon: "https://i.ibb.co/ZRqjDxnw/glass.png"
+            },
+            ゴム: {
+                count: 15,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            布: {
+                count: 15,
+                icon: "https://i.ibb.co/8nTCL1mR/cloth.png"
+                },
+            スクラップ: {
+                count: 15,
+                icon: "https://i.ibb.co/M57LNKxd/metalscrap.png"
+                },
+            剛鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+                },
+        }
+},
+
+{
+        name: "(犯罪)Lockpick",
+        icon: "https://i.ibb.co/mC909Ttg/2026-02-20-001157.png",
+        labor: 10,
+
+        materials: {
+            鉄: {
+                count: 3,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            剛鉄: {
+                count: 3,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+            },
+        }
+},
+
+{
+        name: "(犯罪)Pacific Thermite",
+        icon: "https://i.ibb.co/pvqhb6gj/2026-02-20-001213.png",
+        labor: 50,
+
+        materials: {
+            アルミニウム: {
+                count: 10,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            ゴム: {
+                count: 10,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            鉄: {
+                count: 20,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            鉄の粉: {
+                count: 40,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+                },
+            銅: {
+                count: 15,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+        }
+},
+
+{
+        name: "(犯罪)thermite_bom",
+        icon: "https://i.ibb.co/d4zJxt3b/2026-02-20-001236.png",
+        labor: 100,
+
+        materials: {
+            アルミニウム: {
+                count: 15,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            ゴム: {
+                count: 15,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            ジャンク電子部品: {
+                count: 10,
+                icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png"
+            },
+            鉄: {
+                count: 15,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            鉄の粉: {
+                count: 40,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+                },
+            銅: {
+                count: 15,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+        }
+        },
+
+
+{
+        name: "USBデバイス",
+        icon: "https://i.ibb.co/V0kkypBv/image6-transparent-100.png",
+        labor: 25,
+
+        materials: {
+            クリプトスティック: {
+                count: 20,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            アルミニウム: {
+                count: 5,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+            ジャンク電子部品: {
+                count: 5,
+                icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png"
+            },
+            鉄: {
+                count: 5,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+                },
+            銅: {
+                count: 5,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                },
+        }
+},
+
+{
+        name: "ジャンク電子部品",
+        icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png",
+        labor: 10,
+
+        materials: {
+            クリプトスティック: {
+                count: 4,
+                icon: "https://i.ibb.co/20VMzq78/aluminum.png"
+            },
+        }
+},
+
+{
+        name: "バット",
+        icon: "https://i.ibb.co/JRdPT6Xf/weapon-pistol.png",
+        labor: 400,
+
+        materials: {
+            ゴム: {
+                count: 6,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            プラスチック: {
+                count: 6,
+                icon: "https://i.ibb.co/hRdm4Z1C/plastic.png"
+            },
+            布: {
+                count: 6,
+                icon: "https://i.ibb.co/8nTCL1mR/cloth.png"
+            },
+            鉄: {
+                count: 6,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            剛鉄: {
+                count: 6,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+            },
+        }
+},
+
+{
+        name: "(犯罪)ハンドドリル",
+        icon: "https://i.ibb.co/0ynWcXpc/2026-02-20-001406.png",
+        labor: 100,
+
+        materials: {
+            ゴム: {
+                count: 10,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            ジャンク電子部品: {
+                count: 20,
+                icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png"
+            },
+            鉄: {
+                count: 25,
+                icon: "https://i.ibb.co/kT8MzGL/iron.png"
+            },
+            剛鉄: {
+                count: 25,
+                icon: "https://i.ibb.co/Q3wmcvpP/steel-1.png"
+            },
+        }
+},
+
+{
+        name: "ボール",
+        icon: "https://i.ibb.co/dsKSPg7W/2026-02-20-001335.png",
+        labor: 200,
+
+        materials: {
+            ゴム: {
+                count: 4,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            プラスチック: {
+                count: 4,
+                icon: "https://i.ibb.co/hRdm4Z1C/plastic.png"
+            },
+            布: {
+                count: 4,
+                icon: "https://i.ibb.co/8nTCL1mR/cloth.png"
+            },
+            鉄の粉: {
+                count: 4,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+                },
+        }
+},
+
+{
+        name: "(犯罪)強力なC4爆弾",
+        icon: "https://i.ibb.co/3yKpLZKV/2026-02-20-001417.png",
+        labor: 100,
+
+        materials: {
+            C4: {
+                count: 8,
+                icon: "https://i.ibb.co/3yKpLZKV/2026-02-20-001417.png"
+            },
+            ゴム: {
+                count: 30,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            プラスチック: {
+                count: 30,
+                icon: "https://i.ibb.co/hRdm4Z1C/plastic.png"
+            },
+            鉄の粉: {
+                count: 30,
+                icon: "https://i.ibb.co/H6Z78D9/heroin-base.png"
+                },
+        }
+},
+
+{
+        name: "(犯罪)複号強化鍵",
+        icon: "https://i.ibb.co/Kjf0hPfR/2026-02-20-001425.png",
+        labor: 50,
+
+        materials: {
+            ゴム: {
+                count: 2,
+                icon: "https://i.ibb.co/sd9c5jqS/rubber.png"
+            },
+            ジャンク電子部品: {
+                count: 5,
+                icon: "https://i.ibb.co/1fWWWJns/image-transparent-100.png"
+            },
+            銅: {
+                count: 5,
+                icon: "https://i.ibb.co/ch7dT827/copper.png"
+                }
+        }
+},
 ];
+
 
 /* ===== 薬 ===== */
 const medicineRecipes = [
